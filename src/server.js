@@ -6,7 +6,9 @@
  */
 
 import express from 'express'
-import { CONNECT_DB, GET_DB } from '~/config/mongodb'
+import existHook from 'async-exit-hook'
+import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
+
 
 const START_SERVER = () => {
   const app = express()
@@ -14,7 +16,9 @@ const START_SERVER = () => {
   const hostname = 'localhost'
   const port = 8017
 
-  app.get('/', (req, res) => {
+  app.get('/', async (req, res) => {
+    console.log(await GET_DB().listCollections().toArray())
+    process.exit(0)
     res.end('<h1>Hello World!</h1><hr>')
   })
 
@@ -23,6 +27,11 @@ const START_SERVER = () => {
     console.log(
       `3. Hello , Back-end Server is running success at Host: ${hostname} and Port: ${port}`
     )
+  })
+  existHook(() => {
+    console.log('4. Disconecting ')
+    CLOSE_DB()
+    console.log('5. Disconected')
   })
 }
 
