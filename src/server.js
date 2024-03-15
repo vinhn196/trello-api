@@ -8,28 +8,26 @@
 import express from 'express'
 import existHook from 'async-exit-hook'
 import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
-
+import { env } from './config/environment'
 
 const START_SERVER = () => {
   const app = express()
 
-  const hostname = 'localhost'
-  const port = 8017
-
   app.get('/', async (req, res) => {
-    console.log(await GET_DB().listCollections().toArray())
+    // console.log(await GET_DB().listCollections().toArray())
     process.exit(0)
+    console.log(env.DATABASE_NAME)
     res.end('<h1>Hello World!</h1><hr>')
   })
 
-  app.listen(port, hostname, () => {
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
     // eslint-disable-next-line no-console
     console.log(
-      `3. Hello , Back-end Server is running success at Host: ${hostname} and Port: ${port}`
+      `3. Hello ${env.AUTHOR}, Back-end Server is running success at Host: ${env.APP_HOST} and Port: ${env.APP_PORT}`
     )
   })
   existHook(() => {
-    console.log('4. Disconecting ')
+    console.log('4. Sever is shutting down ... ')
     CLOSE_DB()
     console.log('5. Disconected')
   })

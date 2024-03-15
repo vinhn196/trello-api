@@ -4,20 +4,15 @@
  * "A bit of fragrance clings to the hand that gives flowers!"
  */
 
-//a79TWBaLe1I8Mc8v
-
-const MONGODB_URI = 'mongodb+srv://vinhn96hn:a79TWBaLe1I8Mc8v@cluster0-vinhnguyendev.bgudedj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0-VinhNguyenDev'
-
-const DATABASES_NAME = 'Trello-api'
-
 import { MongoClient, ServerApiVersion } from 'mongodb'
+import { env } from './environment'
 
 //Khởi tạo một đối tượng trelloDatabase
 let trelloDatabaseInstance = null
 
 
 //Khởi tạo một đối tượng để kết nối với mongoDB
-const mongoClientInstance = new MongoClient( MONGODB_URI, {
+const mongoClientInstance = new MongoClient( env.MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -28,9 +23,11 @@ const mongoClientInstance = new MongoClient( MONGODB_URI, {
 //Kết nối với database
 
 export const CONNECT_DB = async () => {
+  console.log(process.env.DATABASE_NAME)
+
   await mongoClientInstance.connect()
 
-  trelloDatabaseInstance = mongoClientInstance.db(DATABASES_NAME)
+  trelloDatabaseInstance = mongoClientInstance.db(env.DATABASES_NAME)
 }
 
 export const GET_DB = () => {
