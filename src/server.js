@@ -7,13 +7,14 @@
 
 import express from 'express'
 import existHook from 'async-exit-hook'
-import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
+import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb'
 import { env } from './config/environment'
 import { APIs_V1 } from '~/routes/v1'
 
 const START_SERVER = () => {
   const app = express()
 
+  app.use(express.json())
   app.use('/v1', APIs_V1)
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
@@ -33,7 +34,7 @@ const START_SERVER = () => {
 // IIFE
 (async () => {
   try {
-    console.log('1. Connecting   to MongoDB cloud Atlas ...')
+    console.log('1. Connecting to MongoDB cloud Atlas ...')
     await CONNECT_DB()
     console.log('2. Connected to MongoDB cloud Atlas')
     START_SERVER()
