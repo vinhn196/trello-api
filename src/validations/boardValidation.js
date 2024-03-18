@@ -25,8 +25,8 @@ const createNew = async (req, res, next) => {
     // console.log('req.body: ', req.body)
     //Chỉ định abortEarly: false để trường hợp nhiều lỗi validation thì trả về tất cả lỗi
     await correctCondition.validateAsync(req.body, { abortEarly: false })
-    // next()
-    res.status(StatusCodes.CREATED).json({ message: 'POST from Validation: APi create new board' })
+    //Validate dữ liệu xong thì cho request đi tiếp qua boardController
+    next()
   } catch (error) {
     console.log(error)
     console.log(new Error(error))
