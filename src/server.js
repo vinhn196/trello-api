@@ -9,16 +9,12 @@ import express from 'express'
 import existHook from 'async-exit-hook'
 import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
 import { env } from './config/environment'
+import { APIs_V1 } from '~/routes/v1'
 
 const START_SERVER = () => {
   const app = express()
 
-  app.get('/', async (req, res) => {
-    // console.log(await GET_DB().listCollections().toArray())
-    // process.exit(0)
-    console.log(env.DATABASE_NAME)
-    res.end('<h1>Hello World!</h1><hr>')
-  })
+  app.use('/v1', APIs_V1)
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
     // eslint-disable-next-line no-console
