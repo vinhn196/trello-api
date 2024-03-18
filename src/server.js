@@ -15,7 +15,7 @@ const START_SERVER = () => {
 
   app.get('/', async (req, res) => {
     // console.log(await GET_DB().listCollections().toArray())
-    process.exit(0)
+    // process.exit(0)
     console.log(env.DATABASE_NAME)
     res.end('<h1>Hello World!</h1><hr>')
   })
