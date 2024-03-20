@@ -6,6 +6,7 @@
 
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
+import ApiError from '~/utils/ApiError'
 
 const createNew = async (req, res, next) => {
 
@@ -16,14 +17,16 @@ const createNew = async (req, res, next) => {
     console.log('req.files: ', req.files)
     console.log('req.cookies: ', req.cookies)
     console.log('req.jwtDecoded: ', req.jwtDecoded)
+
     //Điều hướng dữ liệu qua tầng service
 
     //Có kết quả thì trả về phía Client
     res.status(StatusCodes.CREATED).json({ message: 'POST from Controller: APi create new board' })
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      errors: error.message
-    })
+    next(error)
+    // res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    //   errors: error.message
+    // })
   }
 }
 
