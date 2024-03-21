@@ -7,14 +7,15 @@ const createNew = async (reqBody) => {
     //Xử lý logic dữ liệu tùy đặc thù dự án
     const newBoard = {
       ...reqBody,
-      slug: slugify(reqBody.title)
+      slug: slugify(reqBody.title),
+      title: 'test custom title from service',
+      columnOrderIds:['507f191e810c19729de860ea']
     }
     //Gọi tới tầng Model để xử lý lưu bản ghi newBoard vào trong database
     const createdBoard = await boardModel.createNew(newBoard)
-    console.log(createdBoard)
 
     const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
-    console.log(getNewBoard)
+
     //Trả về kết quả , trong Service luôn phải có return
     return getNewBoard
   } catch (error) {throw error}
