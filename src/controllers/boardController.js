@@ -23,12 +23,8 @@ const createNew = async (req, res, next) => {
     const createdBoard = await boardService.createNew(req.body)
     //Có kết quả thì trả về phía Client
     res.status(StatusCodes.CREATED).json(createdBoard)
-  } catch (error) {
-    next(error)
-    // res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    //   errors: error.message
-    // })
-  }
+  } catch (error) { next(error) }
+
 }
 
 export const boardController = {
