@@ -1,11 +1,7 @@
-/* eslint-disable no-console */
-/**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
- * 'A bit of fragrance clings to the hand that gives flowers!'
- */
 
 import express from 'express'
+import cors from 'cors'
+import { corsOptions } from '~/config/cors'
 import existHook from 'async-exit-hook'
 import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb'
 import { env } from './config/environment'
@@ -15,6 +11,7 @@ import { errorHandlingMiddleware } from './middlewares/errorHandlingMiddleware'
 const START_SERVER = () => {
   const app = express()
 
+  app.use(cors(corsOptions))
   //Enable req.body json data
   app.use(express.json())
 
