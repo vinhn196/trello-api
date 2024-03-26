@@ -28,6 +28,7 @@ const getDetails = async (boardId) => {
   try {
     // console.log(boardId)
     const board = await boardModel.getDetails(boardId)
+    console.log(board)
     if (!board) {
       throw new ApiError( StatusCodes.NOT_FOUND, 'board not found' )
     }
