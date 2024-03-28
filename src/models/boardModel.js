@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
 import { GET_DB } from '~/config/mongodb'
 import { BOARD_TYPES } from '~/utils/constants'
-import { columnModel } from './columnMode'
+import { columnModel } from './columnModel'
 import { cardModel } from './cardModel'
 
 const BOARD_COLLECTION_NAME = 'boards'
@@ -40,9 +40,9 @@ const createNew = async (data) => {
 
 const findOneById = async (id) => {
   try {
-    console.log(id)
+    // console.log(id)
     const testID = new ObjectId(id)
-    console.log(testID)
+    // console.log(testID)
     const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
       _id: new ObjectId(id)
     })

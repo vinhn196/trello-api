@@ -18,7 +18,7 @@ const createNew = async (req, res, next) => {
       'string.empty': 'Title cant be empty!!',
       'string.max': 'Title length must be less than or equa to 5 characters long',
       'string.min': 'Title length must be at least 3 characters long',
-      'string.trim': 'Title must not have leading or trailing whitespace  '
+      'string.trim': 'Title must not have leading or trailing whitespace'
     }),
     description: Joi.string().required().min(3).max(256).trim().strict(),
     type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE).required()
