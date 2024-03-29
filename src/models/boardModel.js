@@ -18,10 +18,11 @@ const BOARD_COLLECTION_SCHEMA = Joi.object({
     Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)
   ).default([]),
   createdAt: Joi.date().timestamp('javascript').default(Date.now),
-  updateAt: Joi.date().timestamp('javascript').default(null),
+  updatedAt: Joi.date().timestamp('javascript').default(null),
   _destroy: Joi.boolean().default(false)
 })
-
+//Chỉ định những Fields mà ta ko muốn cho phép cập nhật trong hàm update
+const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
 const validateBeforeCreate = async (data) => {
   return await BOARD_COLLECTION_SCHEMA.validateAsync( data, { abortEarly: false })
 }
@@ -73,13 +74,45 @@ const getDetails = async (id) => {
     return result[0] || null
   } catch (error) { throw new Error(error) }
 }
+//Nhiệm vụ function này là push 1 cái columnId vào cuối mảng columnOrderIds
+const pushColumnOrderIds = async ( column ) => {
+  try {
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(column.boardId) },
+      { $push: { columnOrderIds: new ObjectId(column._id) } },
+      { returnDocument: 'after'}
+    )
 
+    return result
+  } catch (error) {throw new Error(error)}
+}
+
+const update = async (boardId, updateData) => {
+  try {
+    //Lọc những field mà ta ko cho phép cập nhật linh tinh
+    Object.keys(updateData).forEach(fieldName => {
+      if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
+        delete updateData(fieldName)
+      }
+    })
+
+    // console.log('updateData: ', updateData)
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(boardId) },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    )
+    return result
+  } catch (error) {throw new Error(error)}
+}
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createNew,
   findOneById,
-  getDetails
+  getDetails,
+  pushColumnOrderIds,
+  update
 }
 
 // boardId: 65fd556b291b9ea93b7a0549
