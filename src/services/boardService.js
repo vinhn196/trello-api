@@ -2,7 +2,7 @@ import { slugify } from '~/utils/formatters'
 import { boardModel } from '~/models/boardModel'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
-import {cloneDeep} from 'lodash'
+import { cloneDeep } from 'lodash'
 
 const createNew = async (reqBody) => {
   // eslint-disable-next-line no-useless-catch
@@ -34,7 +34,6 @@ const getDetails = async (boardId) => {
     }
     //B1: Deep board ra 1 cái mới để xử lý, không ảnh hưởng tới board ban đầu
     const resBoard = cloneDeep(board)
-
     //B2: Đưa card về đúng column của nó
     resBoard.columns.forEach(column => {
       // column.cards = resBoard.cards.filter(card => card.columnId.toString() === column._id.toString() )
@@ -50,8 +49,23 @@ const getDetails = async (boardId) => {
     throw new Error(error)
   }
 }
+const update = async (boardId, reqBody) => {
+  try {
+    const updateData = {
+      ...reqBody,
+      updatedAt: Date.now()
+    }
+
+    const updatedBoard = await boardModel.update(boardId, updateData)
+
+    return updatedBoard
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 
 export const boardService = {
   createNew,
-  getDetails
+  getDetails,
+  update
 }
