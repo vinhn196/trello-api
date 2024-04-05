@@ -20,12 +20,24 @@ const START_SERVER = () => {
   //Middleware xử lý lỗi tập chung
   app.use(errorHandlingMiddleware)
 
-  app.listen(env.APP_PORT, env.APP_HOST, () => {
-    // eslint-disable-next-line no-console
-    console.log(
-      `3. Hello ${env.AUTHOR}, Back-end Server is running success at Host: ${env.APP_HOST} and Port: ${env.APP_PORT}`
-    )
-  })
+  //Môi trường production (cụ thể là render.com)
+  if (env.BUILD_MODE === 'production') {
+    app.listen(process.env.PORT, () => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `3. Production: Hello ${env.AUTHOR}, Back-end Server is running success at Port: ${process.env.PORT}`
+      )
+    })
+  } else {
+    //Môi trường local dev
+    app.listen(env.LOCAL_DEV_APP_PORT, env.LOCAL_DEV_APP_HOST, () => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `3. Local Dev: Hello ${env.AUTHOR}, Back-end Server is running success at Host: ${env.LOCAL_DEV_APP_HOST} and Port: ${env.LOCAL_DEV_APP_PORT}`
+      )
+    })
+  }
+
   existHook(() => {
     console.log('4. Sever is shutting down ... ')
     CLOSE_DB()
