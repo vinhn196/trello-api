@@ -21,7 +21,6 @@ const createNew = async (req, res, next) => {
 
 }
 
-
 const getDetails = async (req, res, next) => {
 
   try {
