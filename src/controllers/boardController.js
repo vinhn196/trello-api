@@ -33,7 +33,7 @@ const getDetails = async (req, res, next) => {
 
 }
 const update = async (req, res, next) => {
-
+// update
   try {
     const boardId = req.params.id
 
